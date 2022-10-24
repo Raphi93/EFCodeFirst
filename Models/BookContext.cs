@@ -8,11 +8,19 @@ namespace EFCoreCodeFirst.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=PCHome;Initial Catalog=EFCodeFirst;Integrated Security=True");
+            optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=EFCoreCodeFirst;Integrated Security=True");
         }
         public DbSet<Author> Author { get; set; }
         public DbSet<Book> Books { get; set; }
 
+        public BookContext()
+        {
+        }
+
+        public BookContext(DbContextOptions<BookContext> options)
+            : base(options)
+        {
+        }
 
     }
 }

@@ -8,9 +8,8 @@ namespace EFCoreCodeFirst.Models
     {
         [Key]
         public int AuthorId { get; set; }
-        public ICollection<Book> Books { get; set; }
+        public ICollection<Book> Books { get; set; } = new List<Book>();
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
     }
 }

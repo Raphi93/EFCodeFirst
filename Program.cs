@@ -1,50 +1,54 @@
 ﻿using EFCoreCodeFirst.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Insert();
+        Select();
     }
     private static void Select()
     {
         var contextOptions = new DbContextOptionsBuilder<BookContext>()
-            .UseSqlServer(@"Server=.\;Database=EFCoreFirst;Trusted_Connection=True;MultipleActiveResultSets=true")
+            .UseSqlServer(@"Server=.\;Database=EFCoreCodeFirst;Trusted_Connection=True;MultipleActiveResultSets=true")
             .Options;
 
-        using (var context = BookContextModelSnapshot(contextOptions))
+        using (var context = new BookContext(contextOptions))
         {
-            Console.WriteLine("Kategorie");
-            foreach (var k in context)
+            foreach(var author in context.Author.ToList())
             {
-                Console.WriteLine($"{k.KategorieId}, {k.Kategorie1}");
-            }
-            var q = context.Kategories.Where(e => e.Kategorie1 == "Bikes").FirstOrDefault();
-            if (q != null)
-            {
-                Console.WriteLine($"{q.KategorieId}, {q.Kategorie1}");
-                foreach (var u in q.Unterkategories)
+                Console.WriteLine($"{author.AuthorId}, {author.FirstName} {author.LastName}");
+                foreach (var book in context.Books)
                 {
-                    Console.WriteLine($"{u.Unterkategorie1}");
+                    Console.WriteLine($"{book.BookId}  {book.Title}");
                 }
+                
             }
         }
     }
 
     private static void Insert()
     {
-        var contextOptions = new DbContextOptionsBuilder<efzLagerContext>()
-            .UseSqlServer(@"Server=.\;Database=efzLager;Trusted_Connection=True;MultipleActiveResultSets=true")
+        var contextOptions = new DbContextOptionsBuilder<BookContext>()
+            .UseSqlServer(@"Server=.\;Database=EFCoreCodeFirst;Trusted_Connection=True;MultipleActiveResultSets=true")
             .Options;
 
-        using (var context = new efzLagerContext(contextOptions))
+        using (var context = new BookContext(contextOptions))
         {
-            Kategorie k = new Kategorie()
+            var author = new Author
             {
-                Kategorie1 = "Auto"
+                FirstName = "William",
+                LastName = "Hallo",
+                Books = new List<Book>
+                {
+                    new Book {Title = "Hallo"},
+                    new Book {Title = "njoo"},
+                    new Book {Title = "hahahah"}
+                }
             };
-            context.Add(k);
+            context.Add(author);
             context.SaveChanges();
         }
     }
