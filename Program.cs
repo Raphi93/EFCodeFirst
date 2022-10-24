@@ -37,19 +37,23 @@ internal class Program
 
         using (var context = new BookContext(contextOptions))
         {
-            var author = new Author
+            if (!context.Author.Where(w => w.FirstName == "William" && w.LastName == "Hallo")
+                .Any())
             {
-                FirstName = "William",
-                LastName = "Hallo",
-                Books = new List<Book>
+                var author = new Author
+                {
+                    FirstName = "William",
+                    LastName = "Hallo",
+                    Books = new List<Book>
                 {
                     new Book {Title = "Hallo"},
                     new Book {Title = "njoo"},
                     new Book {Title = "hahahah"}
                 }
-            };
-            context.Add(author);
-            context.SaveChanges();
+                };
+                context.Add(author);
+                context.SaveChanges();
+            }
         }
     }
 }

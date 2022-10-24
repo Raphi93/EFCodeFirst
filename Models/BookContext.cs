@@ -16,7 +16,7 @@ namespace EFCoreCodeFirst.Models
         public BookContext()
         {
         }
-
+   
         public BookContext(DbContextOptions<BookContext> options)
             : base(options)
         {
